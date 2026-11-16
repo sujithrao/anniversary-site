@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 :root {
   --black: #0b0a0c;
   --night: #16131a;
@@ -181,3 +182,29 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 
 /* keep faces in frame when a tall photo fills a wide screen */
 .panel .scene img, .closing .scene img { object-position: 50% 30%; }
+
+/* album: year tabs and photo grid */
+.album { position: relative; z-index: 1; background: var(--black); padding-block: 120px; }
+.album h2 { font-size: clamp(44px, 7vw, 96px); font-weight: 800; }
+.album .lead { margin-top: 16px; color: var(--mute); font-size: 20px; max-width: 44ch; }
+.tabs { display: flex; gap: 8px; margin-top: 40px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 99px; border: 1px solid var(--btn); background: transparent; color: var(--mute); font: 600 15px var(--sans); cursor: pointer; }
+.tabs button small { font-size: 12px; opacity: .7; }
+.tabs button[aria-selected="true"] { background: var(--white); color: var(--black); border-color: var(--white); }
+.grid { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.ph-btn { padding: 0; border: 0; background: var(--btn); border-radius: 14px; overflow: hidden; aspect-ratio: 1; cursor: zoom-in; }
+.ph-btn img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.ph-btn:hover img { transform: scale(1.04); }
+@media (max-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 6px; } .ph-btn { border-radius: 8px; } }
+
+/* full-screen photo viewer */
+.lb { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.94); display: grid; place-items: center; padding: max(56px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lb figure { margin: 0; display: grid; gap: 12px; justify-items: center; }
+.lb img { max-width: 100%; max-height: calc(100svh - 140px); border-radius: 8px; object-fit: contain; }
+.lb figcaption { color: var(--mute); font-size: 14px; }
+.lb button { position: absolute; border: 0; background: rgba(255,255,255,.12); color: #fff; width: 48px; height: 48px; border-radius: 50%; font-size: 22px; cursor: pointer; }
+.lb-x { top: max(16px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+.lb-prev { left: max(16px, env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-50%); }
+.lb-next { right: max(16px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); }
+@media (max-width: 600px) { .lb-prev, .lb-next { top: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: none; } }
