@@ -68,16 +68,18 @@
     document.getElementById('play-label').textContent = on ? 'Pause our song' : 'Play our song';
   }
   if (ytId) {
-    p.hidden = false;
-    p.addEventListener('click', function () {
-      if (ytPlayer) { ytPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); return; }
+    // Browsers mute a video that starts after the tap has "expired", so the player is
+    // loaded ahead of time (when the letter comes near) and the tap starts it directly.
+    var ytWanted = false;
+    function loadYouTube() {
+      if (window.YT || document.getElementById('yt-api')) return;
       yt.hidden = false;
       window.onYouTubeIframeAPIReady = function () {
         ytPlayer = new YT.Player('yt-player', {
           videoId: ytId,
-          playerVars: { autoplay: 1, playsinline: 1, rel: 0, loop: 1, playlist: ytId },
+          playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: ytId },
           events: {
-            onReady: function (e) { e.target.playVideo(); },
+            onReady: function () { if (ytWanted) { ytPlayer.unMute(); ytPlayer.playVideo(); } },
             onStateChange: function (e) { ytPlaying = e.data === YT.PlayerState.PLAYING; setPlaying(ytPlaying); },
             onError: function () {
               // the uploader has blocked playing on other sites: offer the song on YouTube instead
@@ -88,9 +90,27 @@
         });
       };
       var tag = document.createElement('script');
+      tag.id = 'yt-api';
       tag.src = 'https://www.youtube.com/iframe_api';
       document.head.appendChild(tag);
+    }
+    p.hidden = false;
+    p.addEventListener('click', function () {
+      if (ytPlayer && ytPlayer.playVideo) {
+        if (ytPlaying) { ytPlayer.pauseVideo(); return; }
+        ytPlayer.unMute(); ytPlayer.setVolume(100); ytPlayer.playVideo();
+      } else {
+        ytWanted = true; loadYouTube();
+      }
     });
+    if ('IntersectionObserver' in window) {
+      var near = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { loadYouTube(); near.disconnect(); }
+      }, { rootMargin: '600px 0px' });
+      near.observe(document.getElementById('letter'));
+    } else {
+      loadYouTube();
+    }
   } else {
     fetch(song.getAttribute('src'), { method: 'HEAD' }).then(function (r) { if (r.ok) p.hidden = false; }).catch(function () {});
     p.addEventListener('click', function () { if (song.paused) song.play(); else song.pause(); });
