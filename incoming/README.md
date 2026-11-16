@@ -1,6 +1,6 @@
 # Drop original photos here
 
-Upload full-size photos into the matching folder. They are not shown on the site directly:
+Upload full-size photos here, all in one place or into the matching folder. They are not shown on the site directly:
 Claude resizes them, removes location data and places them in `public/photos/`.
 
 - `hero/`: one favourite couple photo for the top of the page
