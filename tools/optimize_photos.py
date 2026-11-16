@@ -8,6 +8,12 @@ from pathlib import Path
 
 from PIL import Image, ImageOps
 
+try:  # iPhone HEIC photos
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+except ImportError:
+    pass
+
 EXTS = {".jpg", ".jpeg", ".png", ".heic", ".webp", ".tif", ".tiff"}
 
 
