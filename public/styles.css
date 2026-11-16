@@ -208,3 +208,4 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .lb-prev { left: max(16px, env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-50%); }
 .lb-next { right: max(16px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); }
 @media (max-width: 600px) { .lb-prev, .lb-next { top: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: none; } }
+.chapter .scene img { object-position: 50% 35%; }
