@@ -40,25 +40,13 @@
   document.getElementById('prev').addEventListener('click', function () { step(-1); });
   document.getElementById('next').addEventListener('click', function () { step(1); });
 
-  // Album tabs
-  var tabs = document.querySelectorAll('.tabs [role="tab"]');
-  tabs.forEach(function (t) {
-    t.addEventListener('click', function () {
-      tabs.forEach(function (o) {
-        var on = o === t;
-        o.setAttribute('aria-selected', on);
-        document.getElementById(o.getAttribute('aria-controls')).hidden = !on;
-      });
-    });
-  });
-
   // Photo viewer: tap a photo, then use arrows, swipe or Esc
   var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
   var list = [], idx = 0, opener = null;
   function show(i) {
     idx = (i + list.length) % list.length;
     lbImg.src = list[idx].dataset.full;
-    lbCap.textContent = list[idx].dataset.cap + '  ·  ' + (idx + 1) + ' of ' + list.length;
+    lbCap.textContent = (list[idx].dataset.cap ? list[idx].dataset.cap + '  ·  ' : '') + (idx + 1) + ' of ' + list.length;
   }
   document.querySelectorAll('.ph-btn').forEach(function (b) {
     b.addEventListener('click', function () {
