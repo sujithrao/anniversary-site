@@ -40,38 +40,23 @@
   document.getElementById('prev').addEventListener('click', function () { step(-1); });
   document.getElementById('next').addEventListener('click', function () { step(1); });
 
-  // Photo viewer: tap a photo, then use arrows, swipe or Esc
-  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
-  var list = [], idx = 0, opener = null;
-  function show(i) {
-    idx = (i + list.length) % list.length;
-    lbImg.src = list[idx].dataset.full;
-    lbCap.textContent = (list[idx].dataset.cap ? list[idx].dataset.cap + '  ·  ' : '') + (idx + 1) + ' of ' + list.length;
-  }
-  document.querySelectorAll('.ph-btn').forEach(function (b) {
-    b.addEventListener('click', function () {
-      list = Array.prototype.slice.call(b.parentNode.querySelectorAll('.ph-btn'));
-      opener = b; lb.hidden = false; show(list.indexOf(b));
-      document.getElementById('lb-close').focus();
-    });
-  });
-  function closeLb() { lb.hidden = true; lbImg.removeAttribute('src'); if (opener) opener.focus(); }
-  document.getElementById('lb-close').addEventListener('click', closeLb);
-  document.getElementById('lb-prev').addEventListener('click', function () { show(idx - 1); });
-  document.getElementById('lb-next').addEventListener('click', function () { show(idx + 1); });
-  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
-  document.addEventListener('keydown', function (e) {
-    if (lb.hidden) return;
-    if (e.key === 'Escape') closeLb();
-    if (e.key === 'ArrowLeft') show(idx - 1);
-    if (e.key === 'ArrowRight') show(idx + 1);
-  });
-  var x0 = null;
-  lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-  lb.addEventListener('touchend', function (e) {
-    if (x0 === null) return;
-    var dx = e.changedTouches[0].clientX - x0; x0 = null;
-    if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+  // Year slideshows: swipe, or use the arrows
+  document.querySelectorAll('.panel').forEach(function (panel) {
+    var track = panel.querySelector('.slides'), count = panel.querySelector('.count');
+    if (!track || !count) return;
+    var total = track.querySelectorAll('.slide').length;
+    var ctl = panel.querySelector('.slide-ctl');
+    if (total < 2) { ctl.hidden = true; return; }
+    function current() { return Math.round(track.scrollLeft / track.clientWidth); }
+    function update() { count.textContent = (current() + 1) + ' / ' + total; }
+    function go(dir) {
+      var next = (current() + dir + total) % total;
+      track.scrollTo({ left: next * track.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+    }
+    panel.querySelector('.prev').addEventListener('click', function () { go(-1); });
+    panel.querySelector('.next').addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', function () { requestAnimationFrame(update); }, { passive: true });
+    update();
   });
 
   // Song: the button only appears when music/our-song.mp3 exists

@@ -1,0 +1,6 @@
+# Photo shown first for each year: <year> <file name>
+2022 IMG_7457.jpeg
+2023 IMG_8890.jpeg
+2024 IMG_9649.jpeg
+2025 IMG_0266.jpeg
+2026 IMG_3356.jpeg
