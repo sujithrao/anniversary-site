@@ -59,14 +59,39 @@
     update();
   });
 
-  // Song: the button only appears when music/our-song.mp3 exists
+  // Song: a YouTube video if data-youtube is set, otherwise music/our-song.mp3 when it exists
   var p = document.getElementById('play'), song = document.getElementById('song');
-  fetch(song.getAttribute('src'), { method: 'HEAD' }).then(function (r) { if (r.ok) p.hidden = false; }).catch(function () {});
-  p.addEventListener('click', function () {
-    if (song.paused) song.play(); else song.pause();
-  });
-  song.addEventListener('play', function () { p.classList.add('on'); p.setAttribute('aria-pressed', 'true'); document.getElementById('play-label').textContent = 'Pause our song'; });
-  song.addEventListener('pause', function () { p.classList.remove('on'); p.setAttribute('aria-pressed', 'false'); document.getElementById('play-label').textContent = 'Play our song'; });
+  var yt = document.getElementById('yt'), ytId = yt.dataset.youtube, ytPlayer = null, ytPlaying = false;
+  function setPlaying(on) {
+    p.classList.toggle('on', on);
+    p.setAttribute('aria-pressed', on);
+    document.getElementById('play-label').textContent = on ? 'Pause our song' : 'Play our song';
+  }
+  if (ytId) {
+    p.hidden = false;
+    p.addEventListener('click', function () {
+      if (ytPlayer) { ytPlaying ? ytPlayer.pauseVideo() : ytPlayer.playVideo(); return; }
+      yt.hidden = false;
+      window.onYouTubeIframeAPIReady = function () {
+        ytPlayer = new YT.Player('yt-player', {
+          videoId: ytId,
+          playerVars: { autoplay: 1, playsinline: 1, rel: 0, loop: 1, playlist: ytId },
+          events: {
+            onReady: function (e) { e.target.playVideo(); },
+            onStateChange: function (e) { ytPlaying = e.data === YT.PlayerState.PLAYING; setPlaying(ytPlaying); }
+          }
+        });
+      };
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    });
+  } else {
+    fetch(song.getAttribute('src'), { method: 'HEAD' }).then(function (r) { if (r.ok) p.hidden = false; }).catch(function () {});
+    p.addEventListener('click', function () { if (song.paused) song.play(); else song.pause(); });
+    song.addEventListener('play', function () { setPlaying(true); });
+    song.addEventListener('pause', function () { setPlaying(false); });
+  }
 
   // Fade-in only for items below the first screen
   if ('IntersectionObserver' in window && !reduce) {
