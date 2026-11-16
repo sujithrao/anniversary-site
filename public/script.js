@@ -78,7 +78,12 @@
           playerVars: { autoplay: 1, playsinline: 1, rel: 0, loop: 1, playlist: ytId },
           events: {
             onReady: function (e) { e.target.playVideo(); },
-            onStateChange: function (e) { ytPlaying = e.data === YT.PlayerState.PLAYING; setPlaying(ytPlaying); }
+            onStateChange: function (e) { ytPlaying = e.data === YT.PlayerState.PLAYING; setPlaying(ytPlaying); },
+            onError: function () {
+              // the uploader has blocked playing on other sites: offer the song on YouTube instead
+              yt.innerHTML = '<a class="yt-out" href="https://www.youtube.com/watch?v=' + ytId + '" target="_blank" rel="noopener">Listen on YouTube ↗</a>';
+              p.hidden = true;
+            }
           }
         });
       };
