@@ -89,6 +89,7 @@
               // the uploader has blocked playing on other sites: offer the song on YouTube instead
               yt.innerHTML = '<a class="yt-out" href="https://www.youtube.com/watch?v=' + ytId + '" target="_blank" rel="noopener">Listen on YouTube ↗</a>';
               p.hidden = true;
+              yt.classList.add('open');
             }
           }
         });
