@@ -5,10 +5,11 @@
     if (img.complete && img.naturalWidth === 0) drop(); else img.addEventListener('error', drop);
   });
 
-  // Days married, from the wedding date on <main>
+  // Days married, counted from the wedding to the 5th anniversary
   var parts = document.getElementById('main').dataset.wedding.split('-');
-  var wed = new Date(+parts[0], +parts[1] - 1, +parts[2]);
-  var days = Math.floor((Date.now() - wed) / 86400000);
+  var wed = new Date(Date.UTC(+parts[0], +parts[1] - 1, +parts[2]));
+  var fifth = new Date(Date.UTC(+parts[0] + 5, +parts[1] - 1, +parts[2]));
+  var days = Math.round((fifth - wed) / 86400000);
   if (days > 0) {
     var d = days.toLocaleString('en-IN');
     document.getElementById('s-days').textContent = d;
@@ -16,8 +17,8 @@
   }
   var pad = function (n) { return String(n).padStart(2, '0'); };
   document.getElementById('dates').textContent =
-    pad(wed.getDate()) + ' · ' + pad(wed.getMonth() + 1) + ' · ' + wed.getFullYear() + ' — ' +
-    pad(wed.getDate()) + ' · ' + pad(wed.getMonth() + 1) + ' · ' + (wed.getFullYear() + 5);
+    pad(wed.getUTCDate()) + ' · ' + pad(wed.getUTCMonth() + 1) + ' · ' + wed.getUTCFullYear() + ' — ' +
+    pad(wed.getUTCDate()) + ' · ' + pad(wed.getUTCMonth() + 1) + ' · ' + (wed.getUTCFullYear() + 5);
 
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
