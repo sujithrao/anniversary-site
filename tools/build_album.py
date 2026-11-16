@@ -5,7 +5,8 @@ Writes public/photos/album/<year>/<n>.webp and fills each
 <!-- slides:YEAR:start --> ... <!-- slides:YEAR:end --> block in public/index.html
 (full-screen background slides) and <!-- cards:YEAR --> blocks (extra carousel cards).
 incoming/featured.txt ("<year> <file name>") picks the first slide of a year;
-photos already used in the wedding cards are skipped for the cards block. Photos without a saved date use the year given in
+photos already used in the wedding cards are skipped for the cards block.
+A photo inside incoming/<year>/ always belongs to that year. Photos without a saved date use the year given in
 incoming/years.txt ("<file name> <year>" per line), or else join the last year.
 """
 import html
@@ -74,13 +75,15 @@ def main() -> int:
 
     groups = defaultdict(list)
     for when, p, img in photos:
-        if when:
+        if p.parent.name.isdigit():  # a photo put in incoming/<year>/ belongs to that year
+            groups[int(p.parent.name)].append((when, p, img))
+        elif when:
             groups[when.year].append((when, p, img))
         elif p.name in years:
             groups[years[p.name]].append((None, p, img))
     last = max(groups) if groups else None
     for when, p, img in photos:
-        if not when and p.name not in years and last:
+        if not when and not p.parent.name.isdigit() and p.name not in years and last:
             groups[last].append((None, p, img))
     for year, items in groups.items():
         items.sort(key=lambda x: x[1].name != featured.get(year))  # featured first, rest keep date order
