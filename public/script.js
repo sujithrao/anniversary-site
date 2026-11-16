@@ -73,14 +73,18 @@
     var ytWanted = false;
     function loadYouTube() {
       if (window.YT || document.getElementById('yt-api')) return;
-      yt.hidden = false;
+      yt.hidden = false;  // stays collapsed (see .yt) until the song plays
       window.onYouTubeIframeAPIReady = function () {
         ytPlayer = new YT.Player('yt-player', {
           videoId: ytId,
           playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: ytId },
           events: {
             onReady: function () { if (ytWanted) { ytPlayer.unMute(); ytPlayer.playVideo(); } },
-            onStateChange: function (e) { ytPlaying = e.data === YT.PlayerState.PLAYING; setPlaying(ytPlaying); },
+            onStateChange: function (e) {
+              ytPlaying = e.data === YT.PlayerState.PLAYING;
+              setPlaying(ytPlaying);
+              if (ytPlaying) yt.classList.add('open');
+            },
             onError: function () {
               // the uploader has blocked playing on other sites: offer the song on YouTube instead
               yt.innerHTML = '<a class="yt-out" href="https://www.youtube.com/watch?v=' + ytId + '" target="_blank" rel="noopener">Listen on YouTube ↗</a>';
