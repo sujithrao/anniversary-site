@@ -3,7 +3,8 @@
 Usage (from the repo root): python3 tools/build_album.py
 Writes public/photos/album/<year>/<n>.webp (thumbnail) and <n>-full.webp,
 and fills each <!-- strip:YEAR:start --> ... <!-- strip:YEAR:end --> block in
-public/index.html. Photos without a saved date are added to the last year.
+public/index.html. Photos without a saved date use the year given in
+incoming/years.txt ("<file name> <year>" per line), or else join the last year.
 """
 import html
 import re
@@ -53,13 +54,23 @@ def main() -> int:
         photos.append((when, p, img))
     photos.sort(key=lambda x: (x[0] is None, x[0] or datetime.max, x[1].name))
 
+    years = {}
+    listed = SRC / "years.txt"
+    if listed.exists():
+        for line in listed.read_text().splitlines():
+            parts = line.split()
+            if len(parts) == 2 and not line.startswith("#"):
+                years[parts[0]] = int(parts[1])
+
     groups = defaultdict(list)
     for when, p, img in photos:
         if when:
             groups[when.year].append((when, img))
+        elif p.name in years:
+            groups[years[p.name]].append((None, img))
     last = max(groups) if groups else None
     for when, p, img in photos:
-        if not when and last:
+        if not when and p.name not in years and last:
             groups[last].append((None, img))
 
     page = PAGE.read_text()

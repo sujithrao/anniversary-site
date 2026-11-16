@@ -1,0 +1,3 @@
+# Year for photos that have no date saved: <file name> <year>
+AB450BE9-A934-4B16-8FD3-9CAD25A62C87.jpeg 2023
+IMG_2726.jpg 2022
