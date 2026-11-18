@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <link rel="stylesheet" href="styles.css">
 </head>
 <!--
@@ -28,7 +29,8 @@
     <ul>
       <li><a href="#wedding">The wedding</a></li>
       <li><a href="#years">Five years</a></li>
-      <li><a href="#ahead">What's next</a></li>
+      <li><a href="#ahead">Promises</a></li>
+      <li><a href="#map">Our map</a></li>
       <li><a href="#letter">A note</a></li>
     </ul>
   </div>
@@ -161,23 +163,28 @@
   <div class="wrap">
     <div class="fade">
       <span class="kicker">Chapter three</span>
-      <h2>The road <span class="it">ahead.</span></h2>
-      <p class="lead">Plans and dreams for the next five years.</p>
+      <h2>Five <span class="it">promises.</span></h2>
+      <p class="lead">One for each of the next five years.</p>
     </div>
-    <div class="bento">
-      <div class="tile photo t1 fade"><div class="scene sc-night"><img src="photos/ahead/01.webp" alt="" loading="lazy"></div><small>By year seven</small><h3>See the northern lights</h3><p>The trip we keep promising each other.</p></div>
-      <div class="tile photo t2 fade"><div class="scene sc-forest"><img src="photos/ahead/02.webp" alt="" loading="lazy"></div><small>By year eight</small><h3>A home with a garden</h3><p>Room for plants and too many guests.</p></div>
-      <div class="tile t3 fade"><small>Every anniversary</small><h3>Plant a tree</h3><p>Wood for year five. A new tree every year after.</p></div>
-      <div class="tile t4 fade"><span class="big">10</span><h3>Next stop</h3><p>Five years down. On to the tin anniversary, then the big one at ten.</p></div>
-      <div class="tile t5 fade"><small>Our list</small>
-        <ul class="list">
-          <li><label for="b1"><input type="checkbox" id="b1" checked><span>Cook a dish from each other's childhood</span></label></li>
-          <li><label for="b2"><input type="checkbox" id="b2"><span>Road trip with no plan</span></label></li>
-          <li><label for="b3"><input type="checkbox" id="b3"><span>Renew our vows by the sea</span></label></li>
-          <li><label for="b4"><input type="checkbox" id="b4"><span>Sunrise from a mountain</span></label></li>
-        </ul>
-      </div>
+    <ol class="promises">
+      <li class="fade"><span class="py">2027</span><p>I promise to keep planning the trips, and to let you pick the playlist.</p></li>
+      <li class="fade"><span class="py">2028</span><p>I promise to make Sunday mornings slow, with coffee for two.</p></li>
+      <li class="fade"><span class="py">2029</span><p>I promise to cheer the loudest for every dream you chase.</p></li>
+      <li class="fade"><span class="py">2030</span><p>I promise to keep finding new places, and to keep coming home to you.</p></li>
+      <li class="fade"><span class="py">2031</span><p>I promise that ten years from now, I'll still be choosing you.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="mapsec" id="map">
+  <div class="wrap">
+    <div class="fade">
+      <span class="kicker">The map of us</span>
+      <h2 style="margin-top:12px">Everywhere <span class="it">we've been.</span></h2>
+      <p class="lead" id="map-sum">Places from our photos. Gold pins are where we've been; dashed pins are where we're going next.</p>
     </div>
+    <div class="map" id="mapview" role="region" aria-label="Map of places we've been together"></div>
+    <ul class="legend"><li><i class="dot been"></i>Been together</li><li><i class="dot dream"></i>Still to go</li></ul>
   </div>
 </section>
 
@@ -201,6 +208,8 @@
 
 <footer><div class="wrap">Sujith &amp; Sahana · since 2021</div></footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="places.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

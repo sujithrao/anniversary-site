@@ -1,0 +1,23 @@
+// Places on "The map of us". Coordinates are city-level, not exact spots.
+// kind: "been" for places we've been together, "dream" for places still to go.
+window.PLACES = [
+  { name: "Bengaluru", when: "Nov 2021 · where we got married", lat: 12.97, lng: 77.59, kind: "been" },
+  { name: "Delhi", when: "Nov 2021 · Lotus Temple", lat: 28.61, lng: 77.21, kind: "been" },
+  { name: "Andaman Islands", when: "Dec 2021 · the beach", lat: 11.97, lng: 92.99, kind: "been" },
+  { name: "Kansas City", when: "2022", lat: 39.10, lng: -94.58, kind: "been" },
+  { name: "Chicago", when: "2022", lat: 41.88, lng: -87.63, kind: "been" },
+  { name: "Great Smoky Mountains", when: "Sep 2022", lat: 35.71, lng: -83.51, kind: "been" },
+  { name: "Raleigh–Durham", when: "2022 and 2023", lat: 35.89, lng: -78.86, kind: "been" },
+  { name: "Dallas area", when: "2022 to 2024 · home", lat: 33.0, lng: -96.8, kind: "been" },
+  { name: "Los Angeles", when: "Aug 2023", lat: 34.10, lng: -118.35, kind: "been" },
+  { name: "Niagara Falls", when: "2023", lat: 43.08, lng: -79.07, kind: "been" },
+  { name: "Orlando", when: "Dec 2023 · Disney", lat: 28.42, lng: -81.58, kind: "been" },
+  { name: "Miami", when: "Dec 2023", lat: 25.78, lng: -80.19, kind: "been" },
+  { name: "Grand Teton", when: "Aug 2024", lat: 43.79, lng: -110.68, kind: "been" },
+  { name: "Yellowstone", when: "Aug 2024", lat: 44.43, lng: -110.59, kind: "been" },
+  { name: "Lincoln, Nebraska", when: "Aug 2024", lat: 40.81, lng: -96.68, kind: "been" },
+  { name: "Northwest Arkansas", when: "2025 to 2026 · home", lat: 36.33, lng: -94.20, kind: "been" },
+  { name: "Hot Springs", when: "Apr 2025", lat: 34.52, lng: -93.05, kind: "been" },
+  { name: "New Hampshire", when: "Mar 2026 · snow day", lat: 43.0, lng: -71.46, kind: "been" },
+  { name: "New York City", when: "Aug 2026", lat: 40.75, lng: -73.98, kind: "been" }
+];

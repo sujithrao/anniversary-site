@@ -123,6 +123,28 @@
     song.addEventListener('pause', function () { setPlaying(false); });
   }
 
+  // The map of us
+  var mapEl = document.getElementById('mapview');
+  if (mapEl && window.L && window.PLACES) {
+    var map = L.map(mapEl, { scrollWheelZoom: false, worldCopyJump: true, attributionControl: true });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 12,
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    }).addTo(map);
+    var bounds = [];
+    PLACES.forEach(function (pl) {
+      var icon = L.divIcon({ className: '', html: '<div class="pin' + (pl.kind === 'dream' ? ' dream' : '') + '"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
+      L.marker([pl.lat, pl.lng], { icon: icon, title: pl.name }).addTo(map)
+        .bindPopup('<b>' + pl.name + '</b><span>' + pl.when + '</span>');
+      bounds.push([pl.lat, pl.lng]);
+    });
+    map.fitBounds(bounds, { padding: [30, 30] });
+    var been = PLACES.filter(function (pl) { return pl.kind === 'been'; }).length;
+    var dreams = PLACES.length - been;
+    document.getElementById('map-sum').textContent = been + ' places from our photos' +
+      (dreams ? ', and ' + dreams + ' still to go. Gold pins are where we\'ve been; dashed pins are next.' : '. Tap a pin to see when we were there.');
+  }
+
   // Fade-in only for items below the first screen
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) {
