@@ -269,7 +269,7 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 
 /* closing: song and letter side by side */
 .closing-actions { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-.closing-actions .play { margin-top: 0; }
+.closing-actions .play { margin-top: 0; width: 232px; height: 52px; padding: 0 20px; justify-content: center; line-height: 1; }
 .closing-actions .yt { flex-basis: 100%; }
 .letter-btn { background: transparent; color: var(--white); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7); }
 .letter-btn:hover { background: rgba(255,255,255,.12); }
@@ -286,11 +286,11 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .env-back, .env-front, .env-flap { position: absolute; left: 0; right: 0; }
 .env-back { inset: 0; background: #e9d5c3; border-radius: 6px; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8); }
 .env-front { inset: 0; border-radius: 6px; z-index: 3; pointer-events: none;
+  clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
   background:
-    linear-gradient(to top right, #f1e0d0 49.6%, transparent 50%) left bottom / 50.5% 100% no-repeat,
-    linear-gradient(to top left, #f1e0d0 49.6%, transparent 50%) right bottom / 50.5% 100% no-repeat,
-    linear-gradient(to bottom right, #e6d0bc 49.6%, transparent 50%) left top / 50.5% 62% no-repeat,
-    linear-gradient(to bottom left, #e6d0bc 49.6%, transparent 50%) right top / 50.5% 62% no-repeat; }
+    linear-gradient(to top right, transparent calc(50% - 1px), rgba(120,80,60,.16) 50%, transparent calc(50% + 1px)) left bottom / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 1px), rgba(120,80,60,.16) 50%, transparent calc(50% + 1px)) right bottom / 50% 100% no-repeat,
+    #f1e0d0; }
 .env-flap { top: 0; height: 58%; z-index: 4; transform-origin: top center; transition: transform .7s cubic-bezier(.6,0,.3,1) .15s, z-index 0s .5s;
   background: linear-gradient(to bottom, #dcc2ab, #e8d4c1); clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 6px 6px 0 0; }
 .seal { position: absolute; z-index: 5; left: 50%; top: 58%; width: 74px; height: 74px; margin: -37px 0 0 -37px; border-radius: 50%; border: 0; cursor: pointer;
@@ -302,14 +302,15 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .seal-hint { position: absolute; left: 0; right: 0; top: calc(100% + 18px); text-align: center; font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.7); transition: opacity .3s; }
 
 .paper { position: absolute; z-index: 2; left: 5%; right: 5%; top: 6%; height: 88%; overflow: hidden; border-radius: 4px; outline: none;
-  background: #fffaf2 repeating-linear-gradient(transparent 0 33px, rgba(176,120,120,.12) 33px 34px);
+  background: #fffaf2;
   box-shadow: 0 2px 10px rgba(0,0,0,.15); transition: transform .9s cubic-bezier(.2,.7,.2,1) .55s; }
-.paper-in { padding: 26px 26px 34px; color: #3b2a2a; }
-.paper-date { font-family: "Caveat", cursive; font-size: 20px; color: #a0707a; text-align: right; }
-.letter-text p { font-family: "Caveat", "Segoe Script", cursive; font-size: 25px; line-height: 34px; margin: 0 0 17px; color: #3b2a2a; }
-.letter-text .hello { font-size: 30px; color: #8e1b33; margin-top: 8px; }
-.letter-text .bye { margin-top: 26px; }
-.letter-text .bye span { font-size: 34px; color: #8e1b33; }
+/* ruled lines: every row is 34px and the writing sits on each line */
+.paper-in { padding: 24px 26px 34px; color: #3b2a2a; background: repeating-linear-gradient(transparent 0 26px, rgba(176,120,120,.2) 26px 27px, transparent 27px 34px); background-origin: content-box; }
+.paper-date { font-family: "Caveat", cursive; font-size: 22px; line-height: 34px; height: 34px; color: #a0707a; text-align: right; }
+.letter-text p { font-family: "Caveat", "Segoe Script", cursive; font-size: 25px; line-height: 34px; margin: 0 0 34px; color: #3b2a2a; }
+.letter-text .hello { font-size: 30px; color: #8e1b33; margin: 0 0 34px; }
+.letter-text .bye { margin: 0; }
+.letter-text .bye span { font-size: 34px; color: #8e1b33; line-height: 34px; }
 
 /* opened: flap swings back, seal falls away, paper rises out and grows to full size */
 .envelope.opened .env-flap { transform: rotateX(180deg); z-index: 1; }
@@ -319,6 +320,6 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .envelope.read { height: auto; margin-top: 0; }
 .envelope.read .env-back, .envelope.read .env-front, .envelope.read .env-flap, .envelope.read .seal, .envelope.read .seal-hint { display: none; }
 .envelope.read .paper { position: relative; inset: auto; left: auto; right: auto; top: auto; height: auto; overflow: visible; width: min(640px, 92vw); left: 50%; transform: translateX(-50%); animation: unfold .7s cubic-bezier(.2,.7,.2,1); box-shadow: 0 40px 80px -30px rgba(0,0,0,.8); }
-.envelope.read .paper-in { padding: clamp(28px, 6vw, 56px); }
+.envelope.read .paper-in { padding: 34px clamp(24px, 6vw, 56px) 68px; }
 @keyframes unfold { from { transform: translateX(-50%) scale(.9); opacity: .6; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .lt, .envelope, .env-flap, .seal, .paper { transition: none; animation: none; } .envelope.read .paper { animation: none; } }

@@ -214,7 +214,7 @@
 
   // The map of us
   var mapEl = document.getElementById('mapview');
-  if (mapEl && window.L && window.PLACES) {
+  if (mapEl && window.L && window.PLACES) try {
     var map = L.map(mapEl, { scrollWheelZoom: false, worldCopyJump: true, attributionControl: true });
     // OpenStreetMap tiles (no key needed), turned dark with a CSS filter in styles.css
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -235,7 +235,7 @@
     var dreams = PLACES.length - been;
     document.getElementById('map-sum').textContent = been + ' places from our photos' +
       (dreams ? ', and ' + dreams + ' still to go. Gold pins are where we\'ve been; dashed pins are next.' : '. Tap a pin to see when we were there.');
-  }
+  } catch (err) { console.error(err); }
 
   // The letter: open the envelope, break the seal, read
   var lt = document.getElementById('lt'), env = document.getElementById('envelope'), ltOpener = null;
