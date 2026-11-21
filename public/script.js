@@ -299,39 +299,55 @@
       document.getElementById('open-letter').addEventListener('click', resetLove);
     }
 
-    var partying = false;
+    // The party keeps going (poppers, falling hearts, confetti) until the letter is closed
+    var partying = false, partyOn = false;
     function celebrate() {
       if (partying) return;
-      partying = true;
+      partying = partyOn = true;
       var c = document.getElementById('party'), ctx = c.getContext('2d');
-      var dpr = Math.min(window.devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight;
-      c.width = W * dpr; c.height = H * dpr; c.hidden = false; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2), W, H;
+      function size() { W = innerWidth; H = innerHeight; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+      size(); addEventListener('resize', size);
+      c.hidden = false;
       var colors = ['#ff4d6d', '#ffb3c1', '#ffd166', '#ffffff', '#c9374f', '#f8a5c2', '#e9c46a'];
       var emoji = ['❤️', '💖', '💕', '💗', '🎉', '✨', '🌹', '💘'];
-      var bits = [], n = reduce ? 60 : 220;
+      var bits = [], few = reduce ? .3 : 1;
       function add(x, y, vx, vy, isEmoji) {
+        if (bits.length > 650) return;
         bits.push({ x: x, y: y, vx: vx, vy: vy, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3,
           w: 6 + Math.random() * 7, h: 9 + Math.random() * 9, c: colors[Math.random() * colors.length | 0],
           e: isEmoji ? emoji[Math.random() * emoji.length | 0] : null, s: 18 + Math.random() * 22, sw: Math.random() * 6.28 });
       }
-      // two party poppers from the bottom corners
-      for (var i = 0; i < n; i++) {
-        var left = i % 2 === 0, ang = (left ? -60 : -120) + (Math.random() - .5) * 40, sp = 9 + Math.random() * 11;
-        add(left ? 0 : W, H, Math.cos(ang * Math.PI / 180) * sp, Math.sin(ang * Math.PI / 180) * sp * (H / 800 + .4), Math.random() < .25);
+      // a party popper from the bottom corners ('both', 'left' or 'right')
+      function pop(side, n) {
+        for (var i = 0; i < n * few; i++) {
+          var left = side === 'both' ? i % 2 === 0 : side === 'left';
+          var ang = (left ? -60 : -120) + (Math.random() - .5) * 40, sp = 9 + Math.random() * 11;
+          add(left ? 0 : W, H, Math.cos(ang * Math.PI / 180) * sp, Math.sin(ang * Math.PI / 180) * sp * (H / 800 + .4), Math.random() < .25);
+        }
       }
-      // and hearts raining from the top
-      var rain = reduce ? 15 : 60, rained = 0;
+      pop('both', 220);
       var msg = document.createElement('div');
       msg.className = 'party-msg';
       msg.innerHTML = 'I love you too<b>Forever &amp; always</b>';
       document.body.appendChild(msg);
-      var start = performance.now();
+      setTimeout(function () { msg.remove(); }, 4600);
+      var stopAt = 0, last = performance.now(), nextPop = last + 2600, nextRain = last, popSide = 'left';
       function frame(t) {
-        var el = t - start;
-        if (rained < rain && el > rained * 60) { add(Math.random() * W, -30, (Math.random() - .5) * 2, 1 + Math.random() * 2, true); rained++; }
+        if (partyOn) {
+          if (t > nextRain) { // hearts and confetti drifting down from the top
+            add(Math.random() * W, -30, (Math.random() - .5) * 2, 1 + Math.random() * 2, Math.random() < .55);
+            nextRain = t + (reduce ? 600 : 140);
+          }
+          if (t > nextPop) { pop(popSide, 90); popSide = popSide === 'left' ? 'right' : 'left'; nextPop = t + 2600; }
+        } else { // letter closed: let it settle for a moment, then clear
+          stopAt = stopAt || t;
+          if (t - stopAt > 1200) bits = [];
+        }
         ctx.clearRect(0, 0, W, H);
         bits.forEach(function (p) {
           p.vy += p.e ? .05 : .22; p.vx *= .99; p.vy *= p.e ? .995 : .985;
+          if (!p.e && p.vy > 3.2) p.vy = 3.2; // paper flutters down slowly
           p.sw += .05; p.x += p.vx + Math.sin(p.sw) * (p.e ? .8 : .4); p.y += p.vy; p.r += p.vr;
           ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.e ? Math.sin(p.sw) * .3 : p.r);
           if (p.e) { ctx.font = p.s + 'px serif'; ctx.textAlign = 'center'; ctx.fillText(p.e, 0, 0); }
@@ -339,14 +355,15 @@
           ctx.restore();
         });
         bits = bits.filter(function (p) { return p.y < H + 60; });
-        if (el < 9000 && (bits.length || rained < rain)) requestAnimationFrame(frame);
-        else { ctx.clearRect(0, 0, W, H); c.hidden = true; msg.remove(); partying = false; }
+        if (partyOn || bits.length) requestAnimationFrame(frame);
+        else { ctx.clearRect(0, 0, W, H); c.hidden = true; removeEventListener('resize', size); partying = false; }
       }
       requestAnimationFrame(frame);
       if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
     }
 
     function closeLetter() {
+      partyOn = false;
       lt.classList.remove('show');
       document.body.style.overflow = '';
       setTimeout(function () { lt.hidden = true; }, reduce ? 0 : 500);
