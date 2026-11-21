@@ -22,14 +22,15 @@ window.PLACES = [
   { name: "New Hampshire", when: "Mar 2026 · snow day", lat: 43.0, lng: -71.46, kind: "been" },
   { name: "New York City", when: "Aug 2026", lat: 40.75, lng: -73.98, kind: "been" },
 
-  { name: "Honolulu, Hawaii", when: "Next 5 years", lat: 21.31, lng: -157.86, kind: "dream" },
-  { name: "Denali National Park, Alaska", when: "Next 5 years", lat: 63.33, lng: -150.50, kind: "dream" },
-  { name: "Banff National Park, Canada", when: "Next 5 years", lat: 51.50, lng: -115.93, kind: "dream" },
-  { name: "Amsterdam", when: "Next 5 years", lat: 52.37, lng: 4.90, kind: "dream" },
-  { name: "Iceland", when: "Next 5 years · the northern lights", lat: 64.15, lng: -21.94, kind: "dream" },
-  { name: "London", when: "Next 5 years · graduation", lat: 51.51, lng: -0.13, kind: "dream" },
-  { name: "Dubai", when: "Next 5 years", lat: 25.20, lng: 55.27, kind: "dream" },
-  { name: "Florence, Italy", when: "Next 5 years", lat: 43.77, lng: 11.26, kind: "dream" },
-  { name: "Paris, France", when: "Next 5 years", lat: 48.86, lng: 2.35, kind: "dream" },
-  { name: "Rome", when: "Next 5 years", lat: 41.90, lng: 12.50, kind: "dream" }
+  { name: "Honolulu, Hawaii", when: "2027", lat: 21.31, lng: -157.86, kind: "dream" },
+  { name: "Denali National Park, Alaska", when: "2028", lat: 63.33, lng: -150.50, kind: "dream" },
+  { name: "Banff National Park, Canada", when: "Someday", lat: 51.50, lng: -115.93, kind: "dream" },
+  { name: "Amsterdam", when: "Someday", lat: 52.37, lng: 4.90, kind: "dream" },
+  { name: "Iceland", when: "2031 · the northern lights", lat: 64.15, lng: -21.94, kind: "dream" },
+  { name: "London", when: "2029 · graduation", lat: 51.51, lng: -0.13, kind: "dream" },
+  { name: "Dubai", when: "Someday", lat: 25.20, lng: 55.27, kind: "dream" },
+  { name: "Florence, Italy", when: "Someday", lat: 43.77, lng: 11.26, kind: "dream" },
+  { name: "Paris, France", when: "Someday", lat: 48.86, lng: 2.35, kind: "dream" },
+  { name: "Rome", when: "Someday", lat: 41.90, lng: 12.50, kind: "dream" },
+  { name: "Mexico", when: "2030", lat: 20.63, lng: -87.08, kind: "dream" }
 ];
