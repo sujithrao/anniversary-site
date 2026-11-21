@@ -325,10 +325,10 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 /* ruled lines: every row is 34px and the writing sits on each line */
 .paper-in { padding: 24px 26px 34px; color: #3b2a2a; background: repeating-linear-gradient(transparent 0 26px, rgba(176,120,120,.2) 26px 27px, transparent 27px 34px); background-origin: content-box; }
 .paper-date { font-family: "Caveat", cursive; font-size: 22px; line-height: 34px; height: 34px; color: #a0707a; text-align: right; }
-.letter-text p { font-family: "Caveat", "Segoe Script", cursive; font-size: 25px; line-height: 34px; margin: 0 0 34px; color: #3b2a2a; }
-.letter-text .hello { font-size: 30px; color: #8e1b33; margin: 0 0 34px; }
+.letter-text p { font-family: "Dancing Script", "Caveat", "Segoe Script", cursive; font-size: 23px; line-height: 34px; margin: 0 0 34px; color: #3b2a2a; }
+.letter-text .hello { font-size: 29px; font-weight: 700; color: #8e1b33; margin: 0 0 34px; }
 .letter-text .bye { margin: 0; }
-.letter-text .bye span { font-size: 34px; color: #8e1b33; line-height: 34px; }
+.letter-text .bye span { font-size: 32px; font-weight: 700; color: #8e1b33; line-height: 34px; }
 
 /* opened: flap swings back, seal falls away, paper rises out and grows to full size */
 .envelope.opened .env-flap { transform: rotateX(180deg); z-index: 1; }
@@ -360,3 +360,10 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .party-msg b { display: block; font-size: max(12px, .22em); font-style: normal; font-family: var(--sans); letter-spacing: .3em; text-transform: uppercase; font-weight: 700; margin-top: 8px; color: #ffd6df; }
 @keyframes partymsg { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); } 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } 25% { transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .love-btn, .love-btn span, .love-btn.caught { animation: none; transition: none; } }
+
+.letter-text .moon { color: #8e1b33; font-weight: 700; }
+.letter-text .hearts { display: block; text-align: center; white-space: nowrap; height: 34px; }
+.letter-text .hearts i { display: inline-block; font-style: normal; color: #d12c4e; font-size: 24px; margin: 0 6px; line-height: 34px; animation: pulse 1.4s ease-in-out infinite; }
+.letter-text .hearts i:nth-child(2) { font-size: 31px; animation-delay: .2s; }
+.letter-text .hearts i:nth-child(3) { animation-delay: .4s; }
+@media (prefers-reduced-motion: reduce) { .letter-text .hearts i { animation: none; } }
