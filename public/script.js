@@ -134,13 +134,15 @@
     }).addTo(map);
     var bounds = [];
     PLACES.forEach(function (pl) {
-      var icon = L.divIcon({ className: '', html: '<div class="pin' + (pl.kind === 'dream' ? ' dream' : '') + '"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
-      L.marker([pl.lat, pl.lng], { icon: icon, title: pl.name }).addTo(map)
+      var icon = pl.kind === 'heart'
+        ? L.divIcon({ className: '', html: '<div class="pin-heart">♥</div>', iconSize: [30, 30], iconAnchor: [15, 15] })
+        : L.divIcon({ className: '', html: '<div class="pin' + (pl.kind === 'dream' ? ' dream' : '') + '"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
+      L.marker([pl.lat, pl.lng], { icon: icon, title: pl.name, zIndexOffset: pl.kind === 'heart' ? 1000 : 0 }).addTo(map)
         .bindPopup('<b>' + pl.name + '</b><span>' + pl.when + '</span>');
       bounds.push([pl.lat, pl.lng]);
     });
     map.fitBounds(bounds, { padding: [30, 30] });
-    var been = PLACES.filter(function (pl) { return pl.kind === 'been'; }).length;
+    var been = PLACES.filter(function (pl) { return pl.kind !== 'dream'; }).length;
     var dreams = PLACES.length - been;
     document.getElementById('map-sum').textContent = been + ' places from our photos' +
       (dreams ? ', and ' + dreams + ' still to go. Gold pins are where we\'ve been; dashed pins are next.' : '. Tap a pin to see when we were there.');

@@ -1,7 +1,8 @@
 // Places on "The map of us". Coordinates are city-level, not exact spots.
-// kind: "been" for places we've been together, "dream" for places still to go.
+// kind: "been" for places we've been together, "dream" for places still to go,
+// "heart" for where we got married.
 window.PLACES = [
-  { name: "Bengaluru", when: "Nov 2021 · where we got married", lat: 12.97, lng: 77.59, kind: "been" },
+  { name: "Bengaluru", when: "24 Nov 2021 · where we got married", lat: 12.97, lng: 77.59, kind: "heart" },
   { name: "Delhi", when: "Nov 2021 · Lotus Temple", lat: 28.61, lng: 77.21, kind: "been" },
   { name: "Andaman Islands", when: "Dec 2021 · the beach", lat: 11.97, lng: 92.99, kind: "been" },
   { name: "Kansas City", when: "2022", lat: 39.10, lng: -94.58, kind: "been" },
@@ -19,5 +20,16 @@ window.PLACES = [
   { name: "Northwest Arkansas", when: "2025 to 2026 · home", lat: 36.33, lng: -94.20, kind: "been" },
   { name: "Hot Springs", when: "Apr 2025", lat: 34.52, lng: -93.05, kind: "been" },
   { name: "New Hampshire", when: "Mar 2026 · snow day", lat: 43.0, lng: -71.46, kind: "been" },
-  { name: "New York City", when: "Aug 2026", lat: 40.75, lng: -73.98, kind: "been" }
+  { name: "New York City", when: "Aug 2026", lat: 40.75, lng: -73.98, kind: "been" },
+
+  { name: "Honolulu, Hawaii", when: "Next 5 years", lat: 21.31, lng: -157.86, kind: "dream" },
+  { name: "Denali National Park, Alaska", when: "Next 5 years", lat: 63.33, lng: -150.50, kind: "dream" },
+  { name: "Banff National Park, Canada", when: "Next 5 years", lat: 51.50, lng: -115.93, kind: "dream" },
+  { name: "Amsterdam", when: "Next 5 years", lat: 52.37, lng: 4.90, kind: "dream" },
+  { name: "Iceland", when: "Next 5 years · the northern lights", lat: 64.15, lng: -21.94, kind: "dream" },
+  { name: "London", when: "Next 5 years · graduation", lat: 51.51, lng: -0.13, kind: "dream" },
+  { name: "Dubai", when: "Next 5 years", lat: 25.20, lng: 55.27, kind: "dream" },
+  { name: "Florence, Italy", when: "Next 5 years", lat: 43.77, lng: 11.26, kind: "dream" },
+  { name: "Paris, France", when: "Next 5 years", lat: 48.86, lng: 2.35, kind: "dream" },
+  { name: "Rome", when: "Next 5 years", lat: 41.90, lng: 12.50, kind: "dream" }
 ];

@@ -227,3 +227,7 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .leaflet-popup-content span { color: #a39ea6; font-size: 13px; }
 .leaflet-container a.leaflet-popup-close-button { color: #a39ea6; }
 .map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.8) contrast(.9) saturate(.6); }
+.pin-heart { width: 30px; height: 30px; display: grid; place-items: center; font-size: 26px; line-height: 1; color: #ff2d55; text-shadow: 0 0 12px rgba(255,45,85,.9), 0 0 2px #000; animation: beat 1.4s ease-in-out infinite; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.2); } 30% { transform: scale(1); } }
+.dot.heart { background: none; width: auto; height: auto; color: #ff2d55; font-style: normal; }
+@media (prefers-reduced-motion: reduce) { .pin-heart { animation: none; } }
