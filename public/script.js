@@ -127,9 +127,10 @@
   var mapEl = document.getElementById('mapview');
   if (mapEl && window.L && window.PLACES) {
     var map = L.map(mapEl, { scrollWheelZoom: false, worldCopyJump: true, attributionControl: true });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // OpenStreetMap tiles (no key needed), turned dark with a CSS filter in styles.css
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 12,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     var bounds = [];
     PLACES.forEach(function (pl) {

@@ -226,3 +226,4 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .leaflet-popup-content b { display: block; font-size: 15px; }
 .leaflet-popup-content span { color: #a39ea6; font-size: 13px; }
 .leaflet-container a.leaflet-popup-close-button { color: #a39ea6; }
+.map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.8) contrast(.9) saturate(.6); }
