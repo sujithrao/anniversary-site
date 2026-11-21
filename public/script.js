@@ -125,15 +125,31 @@
 
   // The next five: tap a year and it bursts open full screen
   var goals = Array.prototype.slice.call(document.querySelectorAll('.goal'));
-  var splash = document.getElementById('splash'), gi = 0, gOpener = null;
+  var splash = document.getElementById('splash'), gi = 0, gOpener = null, goalTimer = null;
   function fillSplash(i) {
     gi = (i + goals.length) % goals.length;
     var g = goals[gi];
     var bg = document.getElementById('splash-bg');
     bg.className = g.querySelector('.scene').className;
     bg.innerHTML = '';
-    var img = g.querySelector('.scene img');
-    if (img) bg.appendChild(img.cloneNode());
+    clearInterval(goalTimer);
+    // every picture for this year cross-fades behind the goals
+    var pics = (window.GOAL_PICS || {})[g.dataset.year] || [];
+    pics.forEach(function (src, k) {
+      var im = document.createElement('img');
+      im.src = src; im.alt = '';
+      if (k === 0) im.className = 'on';
+      bg.appendChild(im);
+    });
+    if (pics.length > 1 && !reduce) {
+      var shown = 0;
+      goalTimer = setInterval(function () {
+        var ims = bg.querySelectorAll('img');
+        ims[shown].classList.remove('on');
+        shown = (shown + 1) % ims.length;
+        ims[shown].classList.add('on');
+      }, 4000);
+    }
     document.getElementById('splash-year').textContent = g.dataset.year;
     var body = document.getElementById('splash-body');
     body.innerHTML = '';
@@ -171,6 +187,7 @@
     });
   });
   function closeSplash() {
+    clearInterval(goalTimer);
     splash.classList.remove('open');
     document.body.style.overflow = '';
     setTimeout(function () { splash.hidden = true; }, reduce ? 0 : 500);

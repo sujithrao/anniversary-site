@@ -218,11 +218,11 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .splash { position: fixed; inset: 0; z-index: 70; overflow: hidden; display: grid; align-items: end; color: #fff; clip-path: circle(0 at var(--cx, 50%) var(--cy, 50%)); transition: clip-path .7s cubic-bezier(.7,0,.2,1); }
 .splash.open { clip-path: circle(150% at var(--cx, 50%) var(--cy, 50%)); }
 .splash::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.1) 35%, rgba(0,0,0,.8)); }
-.splash .scene img { animation: kenburns 14s ease-out both; }
+.splash .scene img { opacity: 0; transition: opacity 1.2s ease; }
+.splash .scene img.on { opacity: 1; animation: kenburns 8s ease-out both; }
 @keyframes kenburns { from { transform: scale(1.15); } to { transform: scale(1); } }
 .splash-in { position: relative; z-index: 2; width: 100%; max-width: 1180px; margin: 0 auto; padding: 120px max(24px, env(safe-area-inset-right, 0px)) max(64px, calc(env(safe-area-inset-bottom, 0px) + 40px)) max(24px, env(safe-area-inset-left, 0px)); }
 .splash-year { font-size: clamp(100px, 20vw, 260px); font-weight: 800; letter-spacing: -0.06em; line-height: .85; margin-top: 10px; }
-.splash-body h3 { font-size: clamp(30px, 4.4vw, 56px); margin-top: 18px; }
 .splash-body ul { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; }
 .splash-body li { font-size: clamp(18px, 2.2vw, 24px); font-weight: 600; display: flex; gap: 12px; align-items: baseline; opacity: 0; transform: translateY(16px); }
 .splash-body li::before { content: "♥"; color: var(--rose); font-size: .8em; }
