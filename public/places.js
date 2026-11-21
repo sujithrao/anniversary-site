@@ -32,5 +32,5 @@ window.PLACES = [
   { name: "Florence, Italy", when: "Someday", lat: 43.77, lng: 11.26, kind: "dream" },
   { name: "Paris, France", when: "Someday", lat: 48.86, lng: 2.35, kind: "dream" },
   { name: "Rome", when: "Someday", lat: 41.90, lng: 12.50, kind: "dream" },
-  { name: "Mexico", when: "2030", lat: 20.63, lng: -87.08, kind: "dream" }
+  { name: "Peru (Machu Picchu)", when: "2030", lat: -13.16, lng: -72.55, kind: "dream" }
 ];
