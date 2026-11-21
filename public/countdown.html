@@ -100,6 +100,7 @@
   });
   var timer = setInterval(tick, 1000);
   tick();
+  if (/[?&]heart\b/.test(location.search)) { clearInterval(timer); showHeart(); } // preview: /countdown?heart
 </script>
 </body>
 </html>
