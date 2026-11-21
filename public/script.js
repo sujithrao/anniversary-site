@@ -237,6 +237,36 @@
       (dreams ? ', and ' + dreams + ' still to go. Gold pins are where we\'ve been; dashed pins are next.' : '. Tap a pin to see when we were there.');
   }
 
+  // The letter: open the envelope, break the seal, read
+  var lt = document.getElementById('lt'), env = document.getElementById('envelope'), ltOpener = null;
+  if (lt) {
+    document.getElementById('open-letter').addEventListener('click', function () {
+      ltOpener = this;
+      env.classList.remove('opened', 'read');
+      lt.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () { lt.classList.add('show'); });
+      document.getElementById('seal').focus();
+    });
+    document.getElementById('seal').addEventListener('click', function () {
+      env.classList.add('opened');
+      setTimeout(function () {
+        env.classList.add('read');
+        lt.scrollTop = 0;
+        document.getElementById('paper').focus();
+      }, reduce ? 0 : 1500);
+    });
+    function closeLetter() {
+      lt.classList.remove('show');
+      document.body.style.overflow = '';
+      setTimeout(function () { lt.hidden = true; }, reduce ? 0 : 500);
+      if (ltOpener) ltOpener.focus();
+    }
+    document.getElementById('lt-close').addEventListener('click', closeLetter);
+    lt.addEventListener('click', function (e) { if (e.target === lt) closeLetter(); });
+    document.addEventListener('keydown', function (e) { if (!lt.hidden && e.key === 'Escape') closeLetter(); });
+  }
+
   // Fade-in only for items below the first screen
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) {
