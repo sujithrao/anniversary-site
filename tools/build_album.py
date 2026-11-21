@@ -6,7 +6,8 @@ Writes public/photos/album/<year>/<n>.webp and fills each
 (full-screen background slides) and <!-- cards:YEAR --> blocks (extra carousel cards).
 incoming/featured.txt ("<year> <file name>") picks the first slide of a year;
 photos already used in the wedding cards are skipped for the cards block.
-A photo inside incoming/<year>/ always belongs to that year. Photos without a saved date use the year given in
+A photo inside incoming/<year>/ always belongs to that year.
+incoming/goals/<year>/ holds the picture for each "next five" tile. Photos without a saved date use the year given in
 incoming/years.txt ("<file name> <year>" per line), or else join the last year.
 """
 import html
@@ -49,7 +50,7 @@ def save(im: Image.Image, dst: Path, size: int) -> None:
 def main() -> int:
     photos = []
     for p in sorted(SRC.rglob("*")):
-        if p.suffix.lower() not in EXTS:
+        if p.suffix.lower() not in EXTS or "goals" in p.parts:
             continue
         with Image.open(p) as im:
             when = taken(im)
@@ -110,6 +111,14 @@ def main() -> int:
             if count:
                 print(f"{year} {kind}: {len(parts)} photos")
     PAGE.write_text(page)
+
+    # "The next five": the first photo in incoming/goals/<year>/ becomes that year's tile
+    for folder in sorted((SRC / "goals").glob("*")):
+        pics = sorted(p for p in folder.glob("*") if p.suffix.lower() in EXTS)
+        if pics:
+            with Image.open(pics[0]) as im:
+                save(ImageOps.exif_transpose(im).convert("RGB"), ROOT / "public" / "photos" / "goals" / f"{folder.name}.webp", 2000)
+            print(f"goal {folder.name}: {pics[0].name}")
     return 0
 
 

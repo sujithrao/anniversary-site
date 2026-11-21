@@ -123,6 +123,78 @@
     song.addEventListener('pause', function () { setPlaying(false); });
   }
 
+  // The next five: tap a year and it bursts open full screen
+  var goals = Array.prototype.slice.call(document.querySelectorAll('.goal'));
+  var splash = document.getElementById('splash'), gi = 0, gOpener = null;
+  function fillSplash(i) {
+    gi = (i + goals.length) % goals.length;
+    var g = goals[gi];
+    var bg = document.getElementById('splash-bg');
+    bg.className = g.querySelector('.scene').className;
+    bg.innerHTML = '';
+    var img = g.querySelector('.scene img');
+    if (img) bg.appendChild(img.cloneNode());
+    document.getElementById('splash-year').textContent = g.dataset.year;
+    var body = document.getElementById('splash-body');
+    body.innerHTML = '';
+    body.appendChild(g.querySelector('template').content.cloneNode(true));
+    splash.classList.remove('open'); void splash.offsetWidth; splash.classList.add('open');
+  }
+  function burst(x, y) {
+    if (reduce) return;
+    var box = document.getElementById('burst');
+    box.innerHTML = '';
+    for (var k = 0; k < 18; k++) {
+      var h = document.createElement('i');
+      var a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 180;
+      h.textContent = '♥';
+      h.style.left = x + 'px'; h.style.top = y + 'px';
+      h.style.setProperty('--dx', Math.cos(a) * d + 'px');
+      h.style.setProperty('--dy', Math.sin(a) * d + 'px');
+      h.style.setProperty('--r', (Math.random() * 120 - 60) + 'deg');
+      h.style.fontSize = (12 + Math.random() * 16) + 'px';
+      box.appendChild(h);
+    }
+  }
+  goals.forEach(function (g, i) {
+    g.addEventListener('click', function (e) {
+      gOpener = g;
+      var r = g.getBoundingClientRect();
+      var x = e.clientX || r.left + r.width / 2, y = e.clientY || r.top + r.height / 2;
+      splash.style.setProperty('--cx', x + 'px');
+      splash.style.setProperty('--cy', y + 'px');
+      splash.hidden = false;
+      document.body.style.overflow = 'hidden';
+      fillSplash(i);
+      burst(x, y);
+      document.getElementById('splash-close').focus();
+    });
+  });
+  function closeSplash() {
+    splash.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function () { splash.hidden = true; }, reduce ? 0 : 500);
+    if (gOpener) gOpener.focus();
+  }
+  if (splash) {
+    document.getElementById('splash-close').addEventListener('click', closeSplash);
+    document.getElementById('splash-prev').addEventListener('click', function () { fillSplash(gi - 1); });
+    document.getElementById('splash-next').addEventListener('click', function () { fillSplash(gi + 1); });
+    document.addEventListener('keydown', function (e) {
+      if (splash.hidden) return;
+      if (e.key === 'Escape') closeSplash();
+      if (e.key === 'ArrowLeft') fillSplash(gi - 1);
+      if (e.key === 'ArrowRight') fillSplash(gi + 1);
+    });
+    var sx = null;
+    splash.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    splash.addEventListener('touchend', function (e) {
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 50) fillSplash(gi + (dx < 0 ? 1 : -1));
+    });
+  }
+
   // The map of us
   var mapEl = document.getElementById('mapview');
   if (mapEl && window.L && window.PLACES) {

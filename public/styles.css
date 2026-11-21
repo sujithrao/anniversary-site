@@ -201,13 +201,47 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .yt iframe { width: 100%; height: 100%; display: block; border: 0; }
 .yt-out { display: grid; place-items: center; width: 100%; height: 100%; background: rgba(255,255,255,.1); color: #fff; font-weight: 700; text-decoration: none; }
 
-/* five promises */
-.promises { list-style: none; margin: 56px 0 0; padding: 0; display: grid; gap: 0; }
-.promises li { display: grid; grid-template-columns: 140px 1fr; gap: 24px; align-items: baseline; padding-block: 28px; border-top: 1px solid color-mix(in srgb, var(--light-ink) 14%, transparent); }
-.promises li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--light-ink) 14%, transparent); }
-.promises .py { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: var(--l-acc1); font-variant-numeric: tabular-nums; }
-.promises p { font-size: clamp(22px, 3vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; max-width: 30ch; text-wrap: balance; }
-@media (max-width: 600px) { .promises li { grid-template-columns: 1fr; gap: 6px; padding-block: 22px; } }
+/* the next five: year tiles that burst open */
+.goals { margin-top: 56px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.goal { position: relative; overflow: hidden; border: 0; padding: 22px; border-radius: 26px; min-height: 340px; color: #fff; text-align: left; cursor: pointer; display: grid; align-content: end; gap: 6px; font-family: var(--sans); transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s; box-shadow: 0 20px 40px -24px rgba(0,0,0,.5); }
+.goal::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(0,0,0,.65)); z-index: 1; }
+.goal > span:not(.scene) { position: relative; z-index: 2; }
+.goal:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 30px 60px -24px rgba(0,0,0,.6); }
+.goal .scene img { transition: transform .8s ease; }
+.goal:hover .scene img { transform: scale(1.06); }
+.g-year { font-size: clamp(40px, 4.6vw, 64px); font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+.g-title { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.g-tap { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-top: 6px; }
+@media (max-width: 960px) { .goals { grid-template-columns: repeat(2, 1fr); } .goal:last-child { grid-column: 1 / -1; min-height: 240px; } .goal { min-height: 260px; } }
+@media (max-width: 480px) { .goals { grid-template-columns: 1fr; } .goal, .goal:last-child { min-height: 200px; } }
+
+.splash { position: fixed; inset: 0; z-index: 70; overflow: hidden; display: grid; align-items: end; color: #fff; clip-path: circle(0 at var(--cx, 50%) var(--cy, 50%)); transition: clip-path .7s cubic-bezier(.7,0,.2,1); }
+.splash.open { clip-path: circle(150% at var(--cx, 50%) var(--cy, 50%)); }
+.splash::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.1) 35%, rgba(0,0,0,.8)); }
+.splash .scene img { animation: kenburns 14s ease-out both; }
+@keyframes kenburns { from { transform: scale(1.15); } to { transform: scale(1); } }
+.splash-in { position: relative; z-index: 2; width: 100%; max-width: 1180px; margin: 0 auto; padding: 120px max(24px, env(safe-area-inset-right, 0px)) max(64px, calc(env(safe-area-inset-bottom, 0px) + 40px)) max(24px, env(safe-area-inset-left, 0px)); }
+.splash-year { font-size: clamp(100px, 20vw, 260px); font-weight: 800; letter-spacing: -0.06em; line-height: .85; margin-top: 10px; }
+.splash-body h3 { font-size: clamp(30px, 4.4vw, 56px); margin-top: 18px; }
+.splash-body ul { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; }
+.splash-body li { font-size: clamp(18px, 2.2vw, 24px); font-weight: 600; display: flex; gap: 12px; align-items: baseline; opacity: 0; transform: translateY(16px); }
+.splash-body li::before { content: "♥"; color: var(--rose); font-size: .8em; }
+.splash.open .splash-body li { animation: rise .6s cubic-bezier(.2,.7,.2,1) forwards; }
+.splash.open .splash-body li:nth-child(1) { animation-delay: .45s; } .splash.open .splash-body li:nth-child(2) { animation-delay: .6s; }
+.splash.open .splash-body li:nth-child(3) { animation-delay: .75s; } .splash.open .splash-body li:nth-child(4) { animation-delay: .9s; }
+.splash.open .splash-body li:nth-child(5) { animation-delay: 1.05s; } .splash.open .splash-body li:nth-child(6) { animation-delay: 1.2s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+.sp-btn { position: absolute; z-index: 3; width: 48px; height: 48px; border-radius: 50%; border: 0; background: rgba(255,255,255,.16); backdrop-filter: blur(10px); color: #fff; font-size: 20px; cursor: pointer; }
+.sp-btn:hover { background: rgba(255,255,255,.3); }
+.sp-x { top: max(16px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); }
+.sp-prev, .sp-next { top: 50%; transform: translateY(-50%); }
+.sp-prev { left: max(16px, env(safe-area-inset-left, 0px)); }
+.sp-next { right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 600px) { .sp-prev, .sp-next { top: max(16px, env(safe-area-inset-top, 0px)); transform: none; } .sp-prev { left: max(16px, env(safe-area-inset-left, 0px)); } .sp-next { left: max(72px, calc(env(safe-area-inset-left, 0px) + 56px)); right: auto; } }
+.burst { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.burst i { position: absolute; font-style: normal; color: var(--rose); font-size: 18px; animation: fly 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+@keyframes fly { from { opacity: 1; transform: translate(-50%, -50%) scale(.6); } to { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2) rotate(var(--r)); } }
+@media (prefers-reduced-motion: reduce) { .splash { transition: none; } .splash .scene img, .splash.open .splash-body li { animation: none; opacity: 1; transform: none; } .burst { display: none; } }
 
 /* map of us */
 .mapsec { position: relative; background: var(--black); padding-block: 120px; }
