@@ -341,3 +341,22 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .envelope.read .paper-in { padding: 34px clamp(24px, 6vw, 56px) 68px; }
 @keyframes unfold { from { transform: translateX(-50%) scale(.9); opacity: .6; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .lt, .envelope, .env-flap, .seal, .paper { transition: none; animation: none; } .envelope.read .paper { animation: none; } }
+
+/* "I love you": runs away a few times, then the whole screen celebrates */
+.love-wrap { margin-top: 34px; text-align: center; min-height: 102px; }
+.love-btn { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 10px; padding: 14px 30px; border: 0; border-radius: 99px; cursor: pointer;
+  font: 700 15px var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #fff;
+  background: linear-gradient(135deg, #e0466a, #8e1b33); box-shadow: 0 12px 26px -10px rgba(142,27,51,.8);
+  transition: transform .28s cubic-bezier(.3,1.6,.5,1), box-shadow .2s; touch-action: manipulation; }
+.love-btn span { font-size: 18px; animation: pulse 1.2s ease-in-out infinite; }
+.love-btn.caught { animation: wiggle .6s ease-in-out infinite alternate; }
+.love-hint { font-family: "Caveat", cursive; font-size: 22px; line-height: 34px; color: #a0707a; margin: 10px 0 0; min-height: 34px; }
+@keyframes wiggle { from { rotate: -3deg; } to { rotate: 3deg; } }
+.party { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 120; pointer-events: none; }
+.party-msg { position: fixed; z-index: 121; left: 50%; top: 42%; transform: translate(-50%, -50%) scale(.4); opacity: 0; pointer-events: none; text-align: center; white-space: nowrap;
+  font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: clamp(42px, 11vw, 88px); line-height: 1.05; color: #fff; text-shadow: 0 4px 30px rgba(224,70,106,.9);
+  animation: partymsg 4.5s cubic-bezier(.2,.8,.2,1) forwards;
+  padding: 22px 34px 24px; border-radius: 28px; background: rgba(70,12,30,.82); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); }
+.party-msg b { display: block; font-size: max(12px, .22em); font-style: normal; font-family: var(--sans); letter-spacing: .3em; text-transform: uppercase; font-weight: 700; margin-top: 8px; color: #ffd6df; }
+@keyframes partymsg { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); } 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); } 25% { transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .love-btn, .love-btn span, .love-btn.caught { animation: none; transition: none; } }

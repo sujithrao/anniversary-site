@@ -256,6 +256,96 @@
         document.getElementById('paper').focus();
       }, reduce ? 0 : 1500);
     });
+    // "I love you": dodges 3 to 5 times, then can be caught
+    var love = document.getElementById('love-btn'), hint = document.getElementById('love-hint');
+    var teases = ['Nope! 😜', 'Too slow…', 'Catch me if you can', 'Almost!', 'One more try…'];
+    var dodges = 0, dodgeMax = 0, lx = 0, ly = 0, lastDodge = 0;
+    function resetLove() {
+      dodges = 0; dodgeMax = 3 + Math.floor(Math.random() * 3); lx = ly = 0;
+      love.style.transform = ''; love.classList.remove('caught'); hint.textContent = 'Go on, tap it';
+    }
+    function dodge() {
+      if (Date.now() - lastDodge < 300) return; // one tap fires several events
+      lastDodge = Date.now();
+      var paper = document.getElementById('paper').getBoundingClientRect();
+      var b = love.getBoundingClientRect();
+      var baseX = b.left - lx, baseY = b.top - ly;
+      var minX = paper.left + 12, maxX = paper.right - b.width - 12;
+      var minY = Math.max(paper.top + 12, 72), maxY = Math.min(paper.bottom, innerHeight) - b.height - 12;
+      var x, y, tries = 0;
+      do {
+        x = minX + Math.random() * Math.max(0, maxX - minX);
+        y = minY + Math.random() * Math.max(0, maxY - minY);
+      } while (++tries < 12 && Math.hypot(x - b.left, y - b.top) < 140);
+      lx = x - baseX; ly = y - baseY;
+      love.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
+      dodges++;
+      if (dodges >= dodgeMax) {
+        hint.textContent = 'Okay okay… you win 💕';
+        love.classList.add('caught');
+      } else {
+        hint.textContent = teases[(dodges - 1) % teases.length];
+      }
+    }
+    if (love) {
+      resetLove();
+      love.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && dodges < dodgeMax) dodge(); });
+      love.addEventListener('pointerdown', function (e) { if (dodges < dodgeMax) { e.preventDefault(); dodge(); } });
+      love.addEventListener('click', function () {
+        if (dodges < dodgeMax) { dodge(); return; }
+        if (Date.now() - lastDodge < 300) return; // the tap that made it stop doesn't count
+        celebrate();
+      });
+      document.getElementById('open-letter').addEventListener('click', resetLove);
+    }
+
+    var partying = false;
+    function celebrate() {
+      if (partying) return;
+      partying = true;
+      var c = document.getElementById('party'), ctx = c.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2), W = innerWidth, H = innerHeight;
+      c.width = W * dpr; c.height = H * dpr; c.hidden = false; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var colors = ['#ff4d6d', '#ffb3c1', '#ffd166', '#ffffff', '#c9374f', '#f8a5c2', '#e9c46a'];
+      var emoji = ['❤️', '💖', '💕', '💗', '🎉', '✨', '🌹', '💘'];
+      var bits = [], n = reduce ? 60 : 220;
+      function add(x, y, vx, vy, isEmoji) {
+        bits.push({ x: x, y: y, vx: vx, vy: vy, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3,
+          w: 6 + Math.random() * 7, h: 9 + Math.random() * 9, c: colors[Math.random() * colors.length | 0],
+          e: isEmoji ? emoji[Math.random() * emoji.length | 0] : null, s: 18 + Math.random() * 22, sw: Math.random() * 6.28 });
+      }
+      // two party poppers from the bottom corners
+      for (var i = 0; i < n; i++) {
+        var left = i % 2 === 0, ang = (left ? -60 : -120) + (Math.random() - .5) * 40, sp = 9 + Math.random() * 11;
+        add(left ? 0 : W, H, Math.cos(ang * Math.PI / 180) * sp, Math.sin(ang * Math.PI / 180) * sp * (H / 800 + .4), Math.random() < .25);
+      }
+      // and hearts raining from the top
+      var rain = reduce ? 15 : 60, rained = 0;
+      var msg = document.createElement('div');
+      msg.className = 'party-msg';
+      msg.innerHTML = 'I love you too<b>Forever &amp; always</b>';
+      document.body.appendChild(msg);
+      var start = performance.now();
+      function frame(t) {
+        var el = t - start;
+        if (rained < rain && el > rained * 60) { add(Math.random() * W, -30, (Math.random() - .5) * 2, 1 + Math.random() * 2, true); rained++; }
+        ctx.clearRect(0, 0, W, H);
+        bits.forEach(function (p) {
+          p.vy += p.e ? .05 : .22; p.vx *= .99; p.vy *= p.e ? .995 : .985;
+          p.sw += .05; p.x += p.vx + Math.sin(p.sw) * (p.e ? .8 : .4); p.y += p.vy; p.r += p.vr;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.e ? Math.sin(p.sw) * .3 : p.r);
+          if (p.e) { ctx.font = p.s + 'px serif'; ctx.textAlign = 'center'; ctx.fillText(p.e, 0, 0); }
+          else { ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.sw * 2))); }
+          ctx.restore();
+        });
+        bits = bits.filter(function (p) { return p.y < H + 60; });
+        if (el < 9000 && (bits.length || rained < rain)) requestAnimationFrame(frame);
+        else { ctx.clearRect(0, 0, W, H); c.hidden = true; msg.remove(); partying = false; }
+      }
+      requestAnimationFrame(frame);
+      if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
+    }
+
     function closeLetter() {
       lt.classList.remove('show');
       document.body.style.overflow = '';

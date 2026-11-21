@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <!--
   Palette: leave class empty for Rose & gold, or use one of
@@ -255,6 +255,11 @@
           <p>This second paragraph is only here to show how the page looks with more than one.</p>
           <p class="bye">Forever yours,<br><span>Sujith</span></p>
         </div>
+        <!-- the runaway button: it dodges a few times, then lets her catch it -->
+        <div class="love-wrap">
+          <button type="button" class="love-btn" id="love-btn">I love you <span aria-hidden="true">♥</span></button>
+          <p class="love-hint" id="love-hint">Go on, tap it</p>
+        </div>
       </div>
     </div>
     <div class="env-front"></div>
@@ -265,12 +270,13 @@
 </div>
 
 </main>
+<canvas class="party" id="party" aria-hidden="true" hidden></canvas>
 
 <footer><div class="wrap">Sujith &amp; Sahana · since 2021</div></footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="places.js?v=3"></script>
-<script src="photos/goals/pics.js?v=3"></script>
-<script src="script.js?v=3"></script>
+<script src="places.js?v=4"></script>
+<script src="photos/goals/pics.js?v=4"></script>
+<script src="script.js?v=4"></script>
 </body>
 </html>
