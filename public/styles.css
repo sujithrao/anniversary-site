@@ -271,10 +271,28 @@ footer { padding-block: 32px; text-align: center; color: var(--mute); font-size:
 .closing-actions { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .closing-actions .play { margin-top: 0; width: 232px; height: 52px; padding: 0 20px; justify-content: center; line-height: 1; }
 .closing-actions .yt { flex-basis: 100%; }
-.letter-btn { background: transparent; color: var(--white); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7); }
-.letter-btn:hover { background: rgba(255,255,255,.12); }
-.env-ico { width: 18px; height: 13px; border: 1.5px solid currentColor; border-radius: 2px; position: relative; overflow: hidden; }
-.env-ico::before { content: ""; position: absolute; left: 50%; top: -9px; width: 13px; height: 13px; border: 1.5px solid currentColor; transform: translateX(-50%) rotate(45deg); }
+/* the sealed envelope you tap to open the letter */
+.mini-env { flex-basis: 100%; display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 4px 0 22px; padding: 10px; background: none; border: 0; color: var(--white); cursor: pointer; position: relative; -webkit-tap-highlight-color: transparent; }
+.mini-env::before { content: ""; position: absolute; left: 50%; top: 52px; width: 240px; height: 150px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(255,170,190,.35), transparent); animation: glow 3.2s ease-in-out infinite; pointer-events: none; }
+.me-body { --tilt: -5deg; position: relative; display: block; width: 172px; height: 116px; border-radius: 5px; overflow: hidden; transform: rotate(var(--tilt)); animation: floaty 3.2s ease-in-out infinite; transition: transform .3s ease;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), rgba(120,80,60,.18) 50%, transparent calc(50% + 1px)) left bottom / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 1px), rgba(120,80,60,.18) 50%, transparent calc(50% + 1px)) right bottom / 50% 100% no-repeat,
+    #f1e0d0;
+  box-shadow: 0 24px 40px -14px rgba(0,0,0,.75), 0 2px 0 rgba(255,255,255,.4) inset; }
+.me-flap { position: absolute; left: 0; right: 0; top: 0; height: 56%; background: linear-gradient(to bottom, #d9bea6, #e8d4c1); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.me-seal { position: absolute; left: 50%; top: 56%; width: 42px; height: 42px; margin: -21px 0 0 -21px; border-radius: 50%; display: flex; align-items: center; justify-content: center; white-space: nowrap;
+  background: radial-gradient(circle at 35% 30%, #c9374f, #8e1b33 60%, #6d1326); box-shadow: 0 3px 8px rgba(0,0,0,.35), inset 0 -3px 5px rgba(0,0,0,.3), inset 0 2px 4px rgba(255,255,255,.25);
+  font: italic 500 13px "Cormorant Garamond", Georgia, serif; color: #f3c9cf; letter-spacing: .02em; }
+.me-seal i { font-style: normal; font-size: 9px; margin: 0 1px; }
+.me-to { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font: 600 17px "Caveat", cursive; color: #8e1b33; }
+.me-hint { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); }
+.mini-env:hover .me-body, .mini-env:focus-visible .me-body { --tilt: 0deg; }
+.mini-env:hover .me-seal { filter: brightness(1.15); }
+.mini-env:focus-visible { outline: 2px solid rgba(255,255,255,.6); outline-offset: 4px; border-radius: 12px; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(var(--tilt)); } 50% { transform: translateY(-7px) rotate(var(--tilt)); } }
+@keyframes glow { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .me-body, .mini-env::before { animation: none; } }
 
 /* the letter: envelope with a wax seal, paper unfolds when the seal is tapped */
 .lt { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; overflow-y: auto; background: radial-gradient(80% 60% at 50% 40%, rgba(80,20,40,.55), rgba(5,3,5,.94)); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: max(64px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); opacity: 0; transition: opacity .5s ease; }
